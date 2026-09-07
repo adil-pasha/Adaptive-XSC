@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdaptiveXSC — Real Model Results</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#12181f; --panel:#1a2230; --panel-2:#212b3b; --line:#2c384a; --paper:#eef1f0;
+    --amber:#e2a23a; --amber-soft:#e2a23a33; --teal:#4fb8a5; --teal-soft:#4fb8a533;
+    --red:#d9685f; --red-soft:#d9685f33; --text-dim:#93a1b4;
+    --mono:'IBM Plex Mono', ui-monospace, monospace; --sans:'Inter', -apple-system, sans-serif;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--ink); color:var(--paper); font-family:var(--sans); font-size:14px; line-height:1.5;}
+  .wrap{max-width:1180px; margin:0 auto; padding:28px 24px 60px;}
+  header{display:flex; justify-content:space-between; align-items:flex-end; gap:24px; padding-bottom:20px; border-bottom:1px solid var(--line); margin-bottom:20px;}
+  .brand{font-size:22px; font-weight:700;}
+  .brand span{color:var(--amber);}
+  .tagline{color:var(--text-dim); max-width:480px; font-size:13px;}
+  .badge{font-family:var(--mono); font-size:11px; color:var(--teal); border:1px solid var(--teal); border-radius:4px; padding:5px 10px;}
+  .note{background:var(--panel-2); border:1px solid var(--line); border-left:3px solid var(--amber); border-radius:6px; padding:12px 14px; font-size:12.5px; color:var(--text-dim); margin-bottom:22px;}
+  .note b{color:var(--paper);}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px;}
+  @media (max-width:900px){ .grid2{grid-template-columns:1fr;} }
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px;}
+  .card h2{margin:0 0 4px; font-size:14px; font-weight:600;}
+  .card .sub{color:var(--text-dim); font-size:12px; margin-bottom:14px;}
+
+  table{width:100%; border-collapse:collapse; font-size:12px;}
+  th{text-align:left; color:var(--text-dim); font-weight:500; padding:7px 8px; border-bottom:1px solid var(--line); font-size:10.5px; text-transform:uppercase; letter-spacing:.03em;}
+  td{padding:8px; border-bottom:1px solid var(--line); font-family:var(--mono);}
+  tr:last-child td{border-bottom:none;}
+  tr.best td{color:var(--teal);}
+  .chart-box{height:200px;}
+
+  .shap-row{display:flex; align-items:center; gap:10px; margin-bottom:9px; font-size:12px;}
+  .shap-label{width:150px; color:var(--text-dim); flex-shrink:0;}
+  .shap-track{flex:1; height:14px; background:var(--panel-2); border-radius:3px; overflow:hidden;}
+  .shap-fill{height:100%; border-radius:3px;}
+  .shap-val{width:44px; text-align:right; font-family:var(--mono); font-size:11px; color:var(--text-dim); flex-shrink:0;}
+
+  .example-box{background:var(--panel-2); border-radius:6px; padding:12px 14px; margin-top:10px;}
+  .example-box .ex-head{display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px;}
+  .example-box .ex-head .actual{color:var(--text-dim);}
+  .example-box .ex-head .pred{color:var(--amber); font-family:var(--mono);}
+  .contrib-row{display:flex; justify-content:space-between; font-size:11.5px; padding:3px 0; color:var(--text-dim);}
+  .contrib-row b{color:var(--paper); font-weight:500;}
+  .contrib-row .pos{color:var(--teal);} .contrib-row .neg{color:var(--red);}
+
+  .decision-banner{background:var(--panel-2); border:1px solid var(--line); border-radius:6px; padding:14px; margin-top:16px;}
+  .decision-banner .rec{font-size:12px; color:var(--text-dim); margin-bottom:6px;}
+  .decision-banner .val{font-family:var(--mono); font-size:19px; font-weight:600; color:var(--amber);}
+  select{background:var(--panel-2); color:var(--paper); border:1px solid var(--line); border-radius:5px; padding:8px; font-family:var(--sans); font-size:13px; width:100%; margin-bottom:14px;}
+  .btn-row{display:flex; gap:8px; margin-top:14px;}
+  button{flex:1; padding:9px 10px; border-radius:5px; border:1px solid var(--line); background:var(--panel-2); color:var(--paper); font-family:var(--sans); font-size:12px; font-weight:600; cursor:pointer;}
+  button:hover{filter:brightness(1.15);}
+  #btn-accept{border-color:var(--teal); color:var(--teal);}
+  #btn-reject{border-color:var(--red); color:var(--red);}
+  #btn-override{border-color:var(--amber); color:var(--amber);}
+  #override-form{display:none; margin-top:12px;}
+  #override-form input, #override-form textarea{width:100%; background:var(--panel-2); border:1px solid var(--line); border-radius:5px; color:var(--paper); padding:8px; font-family:var(--sans); font-size:12px; margin-bottom:8px;}
+  #override-form textarea{resize:vertical; min-height:52px;}
+  .log-section{margin-top:22px;}
+  .empty-log{color:var(--text-dim); font-size:12px; padding:20px 10px; text-align:center;}
+  .tag{display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; font-family:var(--mono);}
+  .tag-accept{background:var(--teal-soft); color:var(--teal);}
+  .tag-reject{background:var(--red-soft); color:var(--red);}
+  .tag-override{background:var(--amber-soft); color:var(--amber);}
+  .reason-col{color:var(--text-dim); max-width:280px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="brand">Adaptive<span>XSC</span></div>
+      <div class="tagline">Demand forecasting and delivery-risk classification, with real trained models and genuine SHAP explainability.</div>
+    </div>
+    <div class="badge">REAL MODEL OUTPUTS</div>
+  </header>
+
+  <div class="note">
+    <b>What's real here:</b> the metrics, feature importances, and worked examples below come from an XGBoost demand forecaster trained on 9,994 real Superstore transactions, and a logistic regression + XGBoost delivery-risk classifier trained on 180,519 real DataCo Smart Supply Chain orders — evaluated on held-out test data with a leakage-free feature set. Full methodology in <code>docs/PROJECT_DOCUMENTATION.md</code>.
+  </div>
+
+  <!-- FORECASTING -->
+  <div class="grid2">
+    <div class="card">
+      <h2>Demand forecast — model comparison</h2>
+      <div class="sub">Time-based holdout, weekly units per product Sub-Category</div>
+      <table>
+        <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>R²</th></tr></thead>
+        <tbody id="forecast-table"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>What drives the forecast</h2>
+      <div class="sub">Real SHAP global feature importance (mean |SHAP|)</div>
+      <div id="forecast-shap"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:18px;">
+    <h2>Worked example — a real prediction explained</h2>
+    <div class="sub">Actual held-out test-set row, with its real SHAP breakdown</div>
+    <div id="forecast-example"></div>
+  </div>
+
+  <!-- RISK -->
+  <div class="grid2">
+    <div class="card">
+      <h2>Late-delivery risk — model comparison</h2>
+      <div class="sub">80/20 stratified holdout, 180,519 real orders</div>
+      <table>
+        <thead><tr><th>Model</th><th>Acc</th><th>Prec</th><th>Rec</th><th>AUC</th></tr></thead>
+        <tbody id="risk-table"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>What drives delivery risk</h2>
+      <div class="sub">Real SHAP global feature importance, top factors</div>
+      <div id="risk-shap"></div>
+    </div>
+  </div>
+
+  <!-- OVERRIDE LOG -->
+  <div class="grid2">
+    <div class="card">
+      <h2>Try it: manager decision on a real prediction</h2>
+      <div class="sub">Select a worked example, then accept / reject / override — this is the trust-calibration mechanism.</div>
+      <select id="example-select"></select>
+      <div class="decision-banner">
+        <div class="rec">Model recommendation</div>
+        <div class="val" id="rec-value">—</div>
+      </div>
+      <div class="btn-row">
+        <button id="btn-accept">Accept</button>
+        <button id="btn-reject">Reject</button>
+        <button id="btn-override">Override</button>
+      </div>
+      <div id="override-form">
+        <input type="number" id="override-qty" placeholder="Your adjusted value">
+        <textarea id="override-reason" placeholder="Why are you overriding the model?"></textarea>
+        <button id="btn-submit-override" style="border-color:var(--amber); color:var(--amber);">Log override</button>
+      </div>
+    </div>
+
+    <div class="card log-section">
+      <h2>Override / audit log</h2>
+      <div class="sub">Real decision-capture mechanism — the paper's core contribution</div>
+      <table>
+        <thead><tr><th>Time</th><th>Example</th><th>Model rec.</th><th>Decision</th><th>Final</th><th>Reason</th></tr></thead>
+        <tbody id="log-body"><tr><td colspan="6" class="empty-log">No decisions logged yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ======== REAL DATA, hard-coded from actual model runs ========
+const forecastResults = [
+  {model:"XGBoost", mae:8.10, rmse:12.06, r2:0.568},
+  {model:"Naive (lag-4 seasonal)", mae:11.37, rmse:17.28, r2:0.113},
+  {model:"Rolling-mean baseline", mae:9.13, rmse:13.21, r2:0.482},
+];
+const riskResults = [
+  {model:"Logistic Regression", accuracy:0.692, precision:0.797, recall:0.588, auc:0.726},
+  {model:"XGBoost", accuracy:0.697, precision:0.835, recall:0.557, auc:0.745},
+];
+const forecastShap = [
+  {feature:"units_roll4_mean (recent demand)", val:5.42},
+  {feature:"week_of_year (seasonality)", val:2.04},
+  {feature:"product sub-category", val:1.61},
+  {feature:"units_lag2", val:1.22},
+  {feature:"units_lag1", val:1.19},
+  {feature:"month", val:0.84},
+  {feature:"units_lag4", val:0.67},
+];
+const riskShap = [
+  {feature:"Days for shipment (scheduled)", val:0.687},
+  {feature:"Shipping Mode", val:0.602},
+  {feature:"Order Type", val:0.373},
+  {feature:"Benefit per order", val:0.036},
+  {feature:"Order Country", val:0.032},
+];
+const forecastExample = {
+  sub_category:"Tables", week:"2018-12-24", actual:2, predicted:12.54, base:9.77,
+  contributions:[
+    {feature:"units_roll4_mean", shap:5.02},
+    {feature:"product sub-category", shap:-2.05},
+    {feature:"units_lag1", shap:-1.09},
+    {feature:"month", shap:0.74},
+    {feature:"week_of_year", shap:0.63},
+  ]
+};
+const workedExamples = [
+  {label:"Tables, week of 2018-12-24 — forecast 12.5 units (actual: 2)", type:"forecast", value:12.5},
+  {label:"High-risk order — scheduled shipment 1 day, standard-class shipping — 87% late-delivery probability", type:"risk", value:0.87},
+  {label:"Low-risk order — scheduled shipment 4 days, first-class shipping — 9% late-delivery probability", type:"risk", value:0.09},
+];
+
+// ======== render tables ========
+function fillTable(id, rows, cols, bestKey){
+  const tbody = document.getElementById(id);
+  tbody.innerHTML = '';
+  const best = Math.max(...rows.map(r=>r[bestKey]));
+  rows.forEach(r=>{
+    const tr = document.createElement('tr');
+    if(r[bestKey]===best) tr.className='best';
+    tr.innerHTML = cols.map(c=>`<td>${typeof r[c]==='number' ? (c==='model'?r[c]:r[c].toFixed(3)) : r[c]}</td>`).join('');
+    tbody.appendChild(tr);
+  });
+}
+fillTable('forecast-table', forecastResults, ['model','mae','rmse','r2'], 'r2');
+fillTable('risk-table', riskResults, ['model','accuracy','precision','recall','auc'], 'auc');
+
+function renderShapList(id, data, color){
+  const max = Math.max(...data.map(d=>d.val));
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  data.forEach(d=>{
+    const pct = (d.val/max*100).toFixed(0);
+    const row = document.createElement('div');
+    row.className='shap-row';
+    row.innerHTML = `<div class="shap-label">${d.feature}</div>
+      <div class="shap-track"><div class="shap-fill" style="width:${pct}%; background:${color};"></div></div>
+      <div class="shap-val">${d.val.toFixed(2)}</div>`;
+    el.appendChild(row);
+  });
+}
+renderShapList('forecast-shap', forecastShap, '#e2a23a');
+renderShapList('risk-shap', riskShap, '#d9685f');
+
+// forecast worked example
+(function(){
+  const el = document.getElementById('forecast-example');
+  const maxAbs = Math.max(...forecastExample.contributions.map(c=>Math.abs(c.shap)));
+  el.innerHTML = `
+    <div class="example-box">
+      <div class="ex-head">
+        <span>${forecastExample.sub_category} — week of ${forecastExample.week}</span>
+        <span><span class="actual">actual: ${forecastExample.actual}</span> &nbsp; <span class="pred">predicted: ${forecastExample.predicted.toFixed(1)}</span></span>
+      </div>
+      ${forecastExample.contributions.map(c=>`
+        <div class="contrib-row">
+          <span>${c.feature}</span>
+          <b class="${c.shap>=0?'pos':'neg'}">${c.shap>=0?'+':''}${c.shap.toFixed(2)}</b>
+        </div>`).join('')}
+    </div>`;
+})();
+
+// ======== override log using real worked examples ========
+const select = document.getElementById('example-select');
+workedExamples.forEach((ex,i)=>{
+  const opt = document.createElement('option');
+  opt.value = i; opt.textContent = ex.label;
+  select.appendChild(opt);
+});
+function currentExample(){ return workedExamples[+select.value]; }
+function updateRec(){
+  const ex = currentExample();
+  document.getElementById('rec-value').textContent =
+    ex.type==='forecast' ? ex.value.toFixed(1)+' units' : (ex.value*100).toFixed(0)+'% late-delivery risk';
+}
+select.addEventListener('change', updateRec);
+updateRec();
+
+const logBody = document.getElementById('log-body');
+let logCount = 0;
+function addLogEntry(decision, val, reason){
+  if(logCount===0) logBody.innerHTML='';
+  logCount++;
+  const ex = currentExample();
+  const tagClass = decision==='Accepted'?'tag-accept':decision==='Rejected'?'tag-reject':'tag-override';
+  const recStr = ex.type==='forecast' ? ex.value.toFixed(1)+' u' : (ex.value*100).toFixed(0)+'%';
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td>${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+    <td>${ex.label.split(' — ')[0]}</td>
+    <td>${recStr}</td>
+    <td><span class="tag ${tagClass}">${decision}</span></td>
+    <td>${val!==null ? val : '—'}</td>
+    <td class="reason-col">${reason||'—'}</td>`;
+  logBody.prepend(row);
+}
+document.getElementById('btn-accept').addEventListener('click', ()=>{
+  document.getElementById('override-form').style.display='none';
+  addLogEntry('Accepted', null, 'Followed model recommendation as-is');
+});
+document.getElementById('btn-reject').addEventListener('click', ()=>{
+  document.getElementById('override-form').style.display='none';
+  addLogEntry('Rejected', null, 'Discarded model recommendation this cycle');
+});
+document.getElementById('btn-override').addEventListener('click', ()=>{
+  const f = document.getElementById('override-form');
+  f.style.display = f.style.display==='block' ? 'none' : 'block';
+});
+document.getElementById('btn-submit-override').addEventListener('click', ()=>{
+  const qty = document.getElementById('override-qty').value;
+  const reason = document.getElementById('override-reason').value;
+  if(!qty || !reason){ alert('Enter both a value and a reason.'); return; }
+  addLogEntry('Overridden', qty, reason);
+  document.getElementById('override-qty').value='';
+  document.getElementById('override-reason').value='';
+  document.getElementById('override-form').style.display='none';
+});
+</script>
+</body>
+</html>

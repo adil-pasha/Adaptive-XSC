@@ -1,0 +1,336 @@
+{
+  "global_importance": [
+    {
+      "feature": "Days for shipment (scheduled)",
+      "mean_abs_shap": 0.68700110912323
+    },
+    {
+      "feature": "Shipping Mode",
+      "mean_abs_shap": 0.6018678545951843
+    },
+    {
+      "feature": "Type",
+      "mean_abs_shap": 0.3731464445590973
+    },
+    {
+      "feature": "Benefit per order",
+      "mean_abs_shap": 0.035603102296590805
+    },
+    {
+      "feature": "Order Country",
+      "mean_abs_shap": 0.032220955938100815
+    },
+    {
+      "feature": "Order Item Profit Ratio",
+      "mean_abs_shap": 0.029605181887745857
+    },
+    {
+      "feature": "Order Region",
+      "mean_abs_shap": 0.021199092268943787
+    },
+    {
+      "feature": "Sales per customer",
+      "mean_abs_shap": 0.02076641656458378
+    },
+    {
+      "feature": "Order Item Discount",
+      "mean_abs_shap": 0.020557843148708344
+    },
+    {
+      "feature": "Order Item Discount Rate",
+      "mean_abs_shap": 0.01699507236480713
+    },
+    {
+      "feature": "Market",
+      "mean_abs_shap": 0.01544429361820221
+    },
+    {
+      "feature": "Category Name",
+      "mean_abs_shap": 0.014462839812040329
+    },
+    {
+      "feature": "Sales",
+      "mean_abs_shap": 0.010793917812407017
+    },
+    {
+      "feature": "Category Id",
+      "mean_abs_shap": 0.009429234080016613
+    },
+    {
+      "feature": "Order Item Product Price",
+      "mean_abs_shap": 0.008897964842617512
+    },
+    {
+      "feature": "Order Profit Per Order",
+      "mean_abs_shap": 0.00832462403923273
+    },
+    {
+      "feature": "Customer Segment",
+      "mean_abs_shap": 0.008194013498723507
+    },
+    {
+      "feature": "Customer Country",
+      "mean_abs_shap": 0.006663138512521982
+    },
+    {
+      "feature": "Order Item Total",
+      "mean_abs_shap": 0.005749562289565802
+    },
+    {
+      "feature": "Order Item Quantity",
+      "mean_abs_shap": 0.0038513392210006714
+    },
+    {
+      "feature": "Department Name",
+      "mean_abs_shap": 0.003377992659807205
+    },
+    {
+      "feature": "Product Price",
+      "mean_abs_shap": 0.0025950290728360415
+    },
+    {
+      "feature": "Department Id",
+      "mean_abs_shap": 0.0017705555073916912
+    },
+    {
+      "feature": "Product Status",
+      "mean_abs_shap": 0.0
+    }
+  ],
+  "sample_explanations": [
+    {
+      "actual_late": 1,
+      "predicted_proba_late": 0.99920493,
+      "base_value": 0.20387674868106842,
+      "top_contributions": [
+        {
+          "feature": "Shipping Mode",
+          "shap_value": 3.2033941745758057
+        },
+        {
+          "feature": "Days for shipment (scheduled)",
+          "shap_value": 1.6244096755981445
+        },
+        {
+          "feature": "Type",
+          "shap_value": 1.5294053554534912
+        },
+        {
+          "feature": "Benefit per order",
+          "shap_value": 0.38080552220344543
+        },
+        {
+          "feature": "Order Item Profit Ratio",
+          "shap_value": -0.08773498237133026
+        },
+        {
+          "feature": "Order Country",
+          "shap_value": 0.08721853792667389
+        },
+        {
+          "feature": "Sales",
+          "shap_value": 0.06245116516947746
+        },
+        {
+          "feature": "Sales per customer",
+          "shap_value": 0.05150593817234039
+        }
+      ]
+    },
+    {
+      "actual_late": 1,
+      "predicted_proba_late": 0.9990785,
+      "base_value": 0.20387674868106842,
+      "top_contributions": [
+        {
+          "feature": "Shipping Mode",
+          "shap_value": 3.1831352710723877
+        },
+        {
+          "feature": "Days for shipment (scheduled)",
+          "shap_value": 1.617621898651123
+        },
+        {
+          "feature": "Type",
+          "shap_value": 1.4932305812835693
+        },
+        {
+          "feature": "Benefit per order",
+          "shap_value": 0.38890886306762695
+        },
+        {
+          "feature": "Order Item Profit Ratio",
+          "shap_value": -0.12253858149051666
+        },
+        {
+          "feature": "Order Country",
+          "shap_value": 0.12180429697036743
+        },
+        {
+          "feature": "Sales",
+          "shap_value": 0.06068775802850723
+        },
+        {
+          "feature": "Sales per customer",
+          "shap_value": 0.05932288616895676
+        }
+      ]
+    },
+    {
+      "actual_late": 1,
+      "predicted_proba_late": 0.99906784,
+      "base_value": 0.20387674868106842,
+      "top_contributions": [
+        {
+          "feature": "Shipping Mode",
+          "shap_value": 3.25630259513855
+        },
+        {
+          "feature": "Days for shipment (scheduled)",
+          "shap_value": 1.6474791765213013
+        },
+        {
+          "feature": "Type",
+          "shap_value": 1.4579721689224243
+        },
+        {
+          "feature": "Order Country",
+          "shap_value": 0.15580715239048004
+        },
+        {
+          "feature": "Order Item Discount Rate",
+          "shap_value": 0.12259527295827866
+        },
+        {
+          "feature": "Order Region",
+          "shap_value": 0.028914473950862885
+        },
+        {
+          "feature": "Customer Country",
+          "shap_value": 0.02683420106768608
+        },
+        {
+          "feature": "Order Item Profit Ratio",
+          "shap_value": 0.019114889204502106
+        }
+      ]
+    },
+    {
+      "actual_late": 1,
+      "predicted_proba_late": 0.15123378,
+      "base_value": 0.20387674868106842,
+      "top_contributions": [
+        {
+          "feature": "Order Region",
+          "shap_value": -0.5545775890350342
+        },
+        {
+          "feature": "Days for shipment (scheduled)",
+          "shap_value": -0.47718340158462524
+        },
+        {
+          "feature": "Type",
+          "shap_value": -0.32757434248924255
+        },
+        {
+          "feature": "Shipping Mode",
+          "shap_value": -0.19782263040542603
+        },
+        {
+          "feature": "Order Country",
+          "shap_value": -0.079848513007164
+        },
+        {
+          "feature": "Sales",
+          "shap_value": -0.07693922519683838
+        },
+        {
+          "feature": "Category Id",
+          "shap_value": -0.06970332562923431
+        },
+        {
+          "feature": "Order Item Profit Ratio",
+          "shap_value": -0.06013898551464081
+        }
+      ]
+    },
+    {
+      "actual_late": 1,
+      "predicted_proba_late": 0.18566367,
+      "base_value": 0.20387674868106842,
+      "top_contributions": [
+        {
+          "feature": "Order Region",
+          "shap_value": -0.47974416613578796
+        },
+        {
+          "feature": "Days for shipment (scheduled)",
+          "shap_value": -0.457981675863266
+        },
+        {
+          "feature": "Type",
+          "shap_value": -0.31294506788253784
+        },
+        {
+          "feature": "Shipping Mode",
+          "shap_value": -0.19996090233325958
+        },
+        {
+          "feature": "Order Country",
+          "shap_value": -0.07883500307798386
+        },
+        {
+          "feature": "Sales per customer",
+          "shap_value": -0.06887979805469513
+        },
+        {
+          "feature": "Sales",
+          "shap_value": -0.05786819010972977
+        },
+        {
+          "feature": "Category Id",
+          "shap_value": 0.05630723759531975
+        }
+      ]
+    },
+    {
+      "actual_late": 1,
+      "predicted_proba_late": 0.19257598,
+      "base_value": 0.20387674868106842,
+      "top_contributions": [
+        {
+          "feature": "Order Item Profit Ratio",
+          "shap_value": -0.49747252464294434
+        },
+        {
+          "feature": "Days for shipment (scheduled)",
+          "shap_value": -0.4149428606033325
+        },
+        {
+          "feature": "Type",
+          "shap_value": -0.2379564642906189
+        },
+        {
+          "feature": "Shipping Mode",
+          "shap_value": -0.1963547021150589
+        },
+        {
+          "feature": "Benefit per order",
+          "shap_value": 0.10574720799922943
+        },
+        {
+          "feature": "Order Item Discount Rate",
+          "shap_value": -0.09160639345645905
+        },
+        {
+          "feature": "Sales per customer",
+          "shap_value": -0.0861174687743187
+        },
+        {
+          "feature": "Order Country",
+          "shap_value": -0.06437258422374725
+        }
+      ]
+    }
+  ]
+}

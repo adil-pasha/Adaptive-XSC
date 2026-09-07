@@ -1,0 +1,267 @@
+{
+  "global_importance": [
+    {
+      "feature": "units_roll4_mean",
+      "mean_abs_shap": 5.419500350952148
+    },
+    {
+      "feature": "week_of_year",
+      "mean_abs_shap": 2.039966106414795
+    },
+    {
+      "feature": "subcat_enc",
+      "mean_abs_shap": 1.6149017810821533
+    },
+    {
+      "feature": "units_lag2",
+      "mean_abs_shap": 1.2248426675796509
+    },
+    {
+      "feature": "units_lag1",
+      "mean_abs_shap": 1.1863542795181274
+    },
+    {
+      "feature": "month",
+      "mean_abs_shap": 0.8417074680328369
+    },
+    {
+      "feature": "units_lag4",
+      "mean_abs_shap": 0.666982889175415
+    },
+    {
+      "feature": "units_roll4_std",
+      "mean_abs_shap": 0.5384646058082581
+    },
+    {
+      "feature": "quarter",
+      "mean_abs_shap": 0.023882009088993073
+    }
+  ],
+  "sample_explanations": [
+    {
+      "sub_category": "Tables",
+      "week": "2018-12-24",
+      "actual_units": 2.0,
+      "predicted_units": 12.53600788116455,
+      "base_value": 9.772863388061523,
+      "contributions": [
+        {
+          "feature": "units_roll4_mean",
+          "shap_value": 5.016561031341553
+        },
+        {
+          "feature": "subcat_enc",
+          "shap_value": -2.050037145614624
+        },
+        {
+          "feature": "units_lag1",
+          "shap_value": -1.0899957418441772
+        },
+        {
+          "feature": "month",
+          "shap_value": 0.7390769124031067
+        },
+        {
+          "feature": "week_of_year",
+          "shap_value": 0.6296209096908569
+        },
+        {
+          "feature": "units_roll4_std",
+          "shap_value": -0.27898478507995605
+        },
+        {
+          "feature": "units_lag4",
+          "shap_value": -0.14124368131160736
+        },
+        {
+          "feature": "quarter",
+          "shap_value": -0.03774936497211456
+        },
+        {
+          "feature": "units_lag2",
+          "shap_value": -0.024104131385684013
+        }
+      ]
+    },
+    {
+      "sub_category": "Machines",
+      "week": "2018-12-24",
+      "actual_units": 5.0,
+      "predicted_units": 3.475156784057617,
+      "base_value": 9.772863388061523,
+      "contributions": [
+        {
+          "feature": "units_roll4_mean",
+          "shap_value": -4.2395524978637695
+        },
+        {
+          "feature": "subcat_enc",
+          "shap_value": -2.035281181335449
+        },
+        {
+          "feature": "units_lag1",
+          "shap_value": -0.7599340677261353
+        },
+        {
+          "feature": "week_of_year",
+          "shap_value": 0.6368032097816467
+        },
+        {
+          "feature": "units_roll4_std",
+          "shap_value": 0.620786190032959
+        },
+        {
+          "feature": "month",
+          "shap_value": 0.5240893363952637
+        },
+        {
+          "feature": "units_lag4",
+          "shap_value": -0.5213654041290283
+        },
+        {
+          "feature": "units_lag2",
+          "shap_value": -0.5103312730789185
+        },
+        {
+          "feature": "quarter",
+          "shap_value": -0.012920841574668884
+        }
+      ]
+    },
+    {
+      "sub_category": "Storage",
+      "week": "2018-12-24",
+      "actual_units": 25.0,
+      "predicted_units": 20.046459197998047,
+      "base_value": 9.772863388061523,
+      "contributions": [
+        {
+          "feature": "units_roll4_mean",
+          "shap_value": 8.664090156555176
+        },
+        {
+          "feature": "units_lag1",
+          "shap_value": 2.8762879371643066
+        },
+        {
+          "feature": "units_lag2",
+          "shap_value": -1.2890405654907227
+        },
+        {
+          "feature": "month",
+          "shap_value": 1.1559724807739258
+        },
+        {
+          "feature": "units_roll4_std",
+          "shap_value": -0.9105164408683777
+        },
+        {
+          "feature": "week_of_year",
+          "shap_value": -0.5439246296882629
+        },
+        {
+          "feature": "units_lag4",
+          "shap_value": 0.3784756660461426
+        },
+        {
+          "feature": "subcat_enc",
+          "shap_value": -0.05246412754058838
+        },
+        {
+          "feature": "quarter",
+          "shap_value": -0.005286645144224167
+        }
+      ]
+    },
+    {
+      "sub_category": "Appliances",
+      "week": "2018-12-24",
+      "actual_units": 5.0,
+      "predicted_units": 19.635387420654297,
+      "base_value": 9.772863388061523,
+      "contributions": [
+        {
+          "feature": "units_roll4_mean",
+          "shap_value": 10.715039253234863
+        },
+        {
+          "feature": "subcat_enc",
+          "shap_value": -1.2533985376358032
+        },
+        {
+          "feature": "month",
+          "shap_value": 1.159919261932373
+        },
+        {
+          "feature": "units_lag4",
+          "shap_value": -1.1305968761444092
+        },
+        {
+          "feature": "units_roll4_std",
+          "shap_value": -1.0870976448059082
+        },
+        {
+          "feature": "units_lag1",
+          "shap_value": 0.8242642879486084
+        },
+        {
+          "feature": "week_of_year",
+          "shap_value": 0.7723846435546875
+        },
+        {
+          "feature": "units_lag2",
+          "shap_value": -0.14920762181282043
+        },
+        {
+          "feature": "quarter",
+          "shap_value": 0.011218490079045296
+        }
+      ]
+    },
+    {
+      "sub_category": "Art",
+      "week": "2018-12-24",
+      "actual_units": 10.0,
+      "predicted_units": 27.745153427124023,
+      "base_value": 9.772863388061523,
+      "contributions": [
+        {
+          "feature": "units_roll4_mean",
+          "shap_value": 12.710403442382812
+        },
+        {
+          "feature": "units_lag1",
+          "shap_value": 3.7820630073547363
+        },
+        {
+          "feature": "month",
+          "shap_value": 1.6558483839035034
+        },
+        {
+          "feature": "units_lag4",
+          "shap_value": -1.483649492263794
+        },
+        {
+          "feature": "units_roll4_std",
+          "shap_value": 1.0315537452697754
+        },
+        {
+          "feature": "week_of_year",
+          "shap_value": 1.0284878015518188
+        },
+        {
+          "feature": "units_lag2",
+          "shap_value": -0.7528045177459717
+        },
+        {
+          "feature": "subcat_enc",
+          "shap_value": 0.026874186471104622
+        },
+        {
+          "feature": "quarter",
+          "shap_value": -0.026485878974199295
+        }
+      ]
+    }
+  ]
+}
