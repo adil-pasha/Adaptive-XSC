@@ -11,3 +11,4 @@ src/test_set.csv
 src/risk_test_set.csv
 src/risk_models.pkl
 src/label_encoder.pkl
+**/secrets.toml

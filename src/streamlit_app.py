@@ -32,6 +32,9 @@ import plotly.graph_objects as go
 import pickle
 import datetime
 from pathlib import Path
+import gspread
+from google.oauth2.service_account import Credentials
+
 
 st.set_page_config(page_title="AdaptiveXSC", page_icon="📦", layout="wide")
 
@@ -125,37 +128,48 @@ def severity_badge(sev):
     color = {"LOW": "green", "MEDIUM": "orange", "HIGH": "red"}[sev]
     return f":{color}[**{sev}**]"
 
+@st.cache_resource
+def get_sheet():
+    creds = Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"],
+        scopes=["https://www.googleapis.com/auth/spreadsheets"],
+    )
+    client = gspread.authorize(creds)
+    return client.open_by_key(st.secrets["SHEET_ID"])
 
 def log_decision(row_dict):
     row_dict["timestamp"] = datetime.datetime.now().isoformat(timespec="seconds")
-    row = pd.DataFrame([row_dict])
-    if LOG_PATH.exists():
-        row.to_csv(LOG_PATH, mode="a", header=False, index=False)
-    else:
-        row.to_csv(LOG_PATH, index=False)
+    ws = get_sheet().worksheet("decisions")
+    if not ws.get_all_values():  # header row missing
+        ws.append_row(list(row_dict.keys()))
+    ws.append_row([str(v) for v in row_dict.values()])
 
 
 def log_feedback(row_dict):
     row_dict["timestamp"] = datetime.datetime.now().isoformat(timespec="seconds")
-    row = pd.DataFrame([row_dict])
-    if FEEDBACK_PATH.exists():
-        row.to_csv(FEEDBACK_PATH, mode="a", header=False, index=False)
-    else:
-        row.to_csv(FEEDBACK_PATH, index=False)
+    ws = get_sheet().worksheet("feedback")
+    if not ws.get_all_values():
+        ws.append_row(list(row_dict.keys()))
+    ws.append_row([str(v) for v in row_dict.values()])
 
 
 def get_collection_stats():
-    if not LOG_PATH.exists():
+    try:
+        ws = get_sheet().worksheet("decisions")
+        records = ws.get_all_records()
+    except Exception:
         return dict(total=0, ACCEPT=0, REJECT=0, OVERRIDE=0, unique_skus=0, unique_regions=0, evaluators=0)
-    df = pd.read_csv(LOG_PATH)
+    df = pd.DataFrame(records)
+    if df.empty:
+        return dict(total=0, ACCEPT=0, REJECT=0, OVERRIDE=0, unique_skus=0, unique_regions=0, evaluators=0)
     return dict(
         total=len(df),
         ACCEPT=(df["decision"] == "ACCEPT").sum(),
         REJECT=(df["decision"] == "REJECT").sum(),
         OVERRIDE=(df["decision"] == "OVERRIDE").sum(),
-        unique_skus=df["sub_category"].nunique() if "sub_category" in df else 0,
-        unique_regions=df["region"].nunique() if "region" in df else 0,
-        evaluators=df["evaluator_id"].nunique() if "evaluator_id" in df else 0,
+        unique_skus=df["sub_category"].nunique(),
+        unique_regions=df["region"].nunique(),
+        evaluators=df["evaluator_id"].nunique(),
     )
 
 
@@ -329,7 +343,12 @@ with st.expander("💬 Evaluator Feedback"):
 
 # ============================================================ LOG VIEW
 with st.expander("📋 View Decision Log"):
-    if LOG_PATH.exists():
-        st.dataframe(pd.read_csv(LOG_PATH).sort_values("timestamp", ascending=False), use_container_width=True)
-    else:
-        st.info("No decisions logged yet.")
+    try:
+        records = get_sheet().worksheet("decisions").get_all_records()
+        if records:
+            df_log = pd.DataFrame(records)
+            st.dataframe(df_log.sort_values("timestamp", ascending=False), use_container_width=True)
+        else:
+            st.info("No decisions logged yet.")
+    except Exception as e:
+        st.warning(f"Could not load decision log: {e}")
