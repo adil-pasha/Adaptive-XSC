@@ -183,17 +183,15 @@ the direct cause of the original Streamlit Cloud deployment failures.
 - **Research pipeline**: runs locally or in any standard Python 3.12/3.13
   environment (see above). Not deployed as a live service — it's a batch
   training/evaluation pipeline, appropriately.
-- **Demo app** (`app/index.html`): a static, dependency-free HTML/JS page
-  showing the real metrics, real SHAP importances, and real worked examples
-  above, plus a live override/audit-log interaction. No backend, no native
-  dependencies, so nothing to crash. Deployable instantly via GitHub Pages
-  (Settings → Pages → Deploy from branch) or any static host.
-- Earlier attempts to deploy the full `shap`/`xgboost` stack as a live
-  Streamlit/Render web service ran into the native-library/Python-version
-  issues in Section 2. If a live-inference web service is wanted later, the
-  recommended path is a small FastAPI backend pinned to Python 3.12, calling
-  the saved model (`xgb_forecast.json`, `risk_models.pkl`) — decoupled from
-  the frontend, so a backend crash doesn't take down the UI.
+- **App** (`src/streamlit_app.py`): a real Streamlit web app that loads the
+  actual trained model files and computes SHAP live on every interaction.
+  An earlier static-HTML demo version (with precomputed placeholder outputs)
+  was removed in favor of this real, running application.
+- Earlier attempts to deploy the full `shap`/`xgboost` stack to Streamlit
+  Community Cloud and Render ran into the native-library/Python-version
+  issues in Section 2. Running the app locally (or on any host you control,
+  pinned to Python 3.12/3.13) avoids those platform-specific failures
+  entirely — the app has no external service dependency.
 
 ---
 
@@ -220,21 +218,25 @@ the direct cause of the original Streamlit Cloud deployment failures.
 ```
 repo/
 ├── src/
-│   ├── etl_demand.py           # Phase I: weekly demand panel construction
-│   ├── train_forecast.py       # XGBoost forecaster + baselines
-│   ├── explain_shap.py         # Real SHAP for the forecaster
-│   ├── train_risk_v2.py        # Logistic regression + XGBoost risk classifier
+│   ├── streamlit_app.py        # The real app — run this
+│   ├── etl_demand_v2.py        # SKU x Warehouse panel (used by the app)
+│   ├── train_forecast_v2.py    # XGBoost forecaster, SKU x Warehouse (used by the app)
+│   ├── weekly_panel_v2.csv     # Generated panel (committed — app needs this to run)
+│   ├── xgb_forecast_v2.json    # Trained model (committed — app needs this to run)
+│   ├── label_encoders_v2.pkl   # Encoders (committed — app needs this to run)
+│   ├── superstore.csv          # Included (2.3MB)
+│   ├── etl_demand.py           # Original Sub-Category-only pipeline, kept for comparison
+│   ├── train_forecast.py       # Original coarser forecaster (R²=0.568)
+│   ├── explain_shap.py         # Real SHAP for the original forecaster
+│   ├── train_risk_v2.py        # Logistic regression + XGBoost delivery-risk classifier
+│   │                            # (needs DataCoSupplyChainDataset.csv — see SETUP.md;
+│   │                            #  not currently used by streamlit_app.py)
 │   └── explain_risk_shap.py    # Real SHAP for the risk classifier
-├── data/
-│   └── superstore.csv          # Included (2.3MB)
-│                                # DataCoSupplyChainDataset.csv NOT included (91MB) — see SETUP.md
 ├── results/
 │   ├── forecast_results.json
 │   ├── risk_results.json
 │   ├── shap_explanations.json
 │   └── risk_shap_explanations.json
-├── app/
-│   └── index.html              # Static demo, real precomputed outputs, override log
 ├── docs/
 │   └── PROJECT_DOCUMENTATION.md  # This file
 ├── SETUP.md

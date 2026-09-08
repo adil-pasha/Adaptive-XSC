@@ -2,7 +2,12 @@ venv/
 __pycache__/
 *.pyc
 .DS_Store
-*.pkl
-weekly_panel.csv
-xgb_forecast.json
-data/DataCoSupplyChainDataset.csv
+src/weekly_panel.csv
+src/xgb_forecast.json
+src/DataCoSupplyChainDataset.csv
+src/decision_log.csv
+src/feedback_log.csv
+src/test_set.csv
+src/risk_test_set.csv
+src/risk_models.pkl
+src/label_encoder.pkl
